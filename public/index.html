@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Cloud Monitor - Sustainable Cloud Computing</title>
+    <meta name="description" content="Real-time cloud resource monitoring demonstrating green computing principles. Track CPU, memory, storage usage and calculate environmental impact.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #10b981;
+            color: white;
+            border-radius: 25px;
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .metric-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-unit {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .environmental-impact {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .impact-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .impact-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+        
+        .impact-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .impact-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌱 Green Cloud Monitor</h1>
+            <p>Real-time monitoring for sustainable cloud computing</p>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Live Monitoring</span>
+            </div>
+        </div>
+
+        <!-- Resource Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
+                        💻
+                    </div>
+                    <div class="metric-title">CPU Usage</div>
+                </div>
+                <div class="metric-value">45%</div>
+                <div class="metric-unit">Current Load</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%;"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(118, 75, 162, 0.1); color: #764ba2;">
+                        🗄️
+                    </div>
+                    <div class="metric-title">Memory Usage</div>
+                </div>
+                <div class="metric-value">62%</div>
+                <div class="metric-unit">RAM Utilization</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 62%;"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                        💾
+                    </div>
+                    <div class="metric-title">Storage Usage</div>
+                </div>
+                <div class="metric-value">38%</div>
+                <div class="metric-unit">Disk Space</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 38%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environmental Impact -->
+        <div class="environmental-impact">
+            <h2 class="impact-title">🌍 Environmental Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <div class="impact-value">0.12</div>
+                    <div class="impact-label">kWh Energy</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">0.06</div>
+                    <div class="impact-label">kg CO₂</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">85%</div>
+                    <div class="impact-label">Efficiency</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Green Cloud Computing Mini Project</strong></p>
+            <p>Demonstrating eco-friendly cloud practices and sustainable computing</p>
+            <p>Built with React, Vite, and modern web technologies</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for the metrics
+        function animateMetrics() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            const metricValues = document.querySelectorAll('.metric-value');
+            
+            progressBars.forEach((bar, index) => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, index * 200);
+            });
+        }
+
+        // Animate on load
+        window.addEventListener('load', () => {
+            setTimeout(animateMetrics, 500);
+        });
+
+        // Update metrics every 5 seconds (simulated)
+        setInterval(() => {
+            const cpuValue = Math.floor(Math.random() * 30) + 30; // 30-60%
+            const memoryValue = Math.floor(Math.random() * 25) + 50; // 50-75%
+            const storageValue = Math.floor(Math.random() * 20) + 30; // 30-50%
+            
+            document.querySelector('.metric-card:nth-child(1) .metric-value').textContent = cpuValue + '%';
+            document.querySelector('.metric-card:nth-child(1) .progress-fill').style.width = cpuValue + '%';
+            
+            document.querySelector('.metric-card:nth-child(2) .metric-value').textContent = memoryValue + '%';
+            document.querySelector('.metric-card:nth-child(2) .progress-fill').style.width = memoryValue + '%';
+            
+            document.querySelector('.metric-card:nth-child(3) .metric-value').textContent = storageValue + '%';
+            document.querySelector('.metric-card:nth-child(3) .progress-fill').style.width = storageValue + '%';
+        }, 5000);
+    </script>
+</body>
+</html>

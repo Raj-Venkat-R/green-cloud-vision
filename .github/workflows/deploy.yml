@@ -19,14 +19,15 @@ jobs:
         node-version: '18'
         cache: 'npm'
         
-    - name: Install dependencies
-      run: npm install
+    - name: Create dist directory
+      run: mkdir -p dist
       
-    - name: Build
-      run: npx vite build --config vite.config.simple.ts
-      
-    - name: Copy simple HTML
-      run: cp index.simple.html dist/index.html
+    - name: Copy static files
+      run: |
+        cp public/index.html dist/
+        cp public/favicon.ico dist/ || true
+        cp public/placeholder.svg dist/ || true
+        cp public/robots.txt dist/ || true
       
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

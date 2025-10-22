@@ -19,19 +19,10 @@ jobs:
         node-version: '18'
         cache: 'npm'
         
-    - name: Create dist directory
-      run: mkdir -p dist
-      
-    - name: Copy static files
-      run: |
-        cp public/index.html dist/
-        cp public/favicon.ico dist/ || true
-        cp public/placeholder.svg dist/ || true
-        cp public/robots.txt dist/ || true
+    - name: Install dependencies
+      run: npm install
       
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+      run: npm run deploy
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
